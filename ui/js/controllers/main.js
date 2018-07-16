@@ -4,7 +4,7 @@ import Mousetrap from 'mousetrap';
 
 import treeherderApp from '../treeherder_app';
 import {
-  thTitleSuffixLimit, thDefaultRepo, thJobNavSelectors, thEvents, thAllResultStatuses,
+  thTitleSuffixLimit, thDefaultRepo, thJobNavSelectors, thEvents,
 } from '../constants';
 
 treeherderApp.controller('MainCtrl', [
@@ -23,8 +23,8 @@ treeherderApp.controller('MainCtrl', [
                         'danger', { sticky: true });
         }
 
-        // whether a new version of Treeherder was deployed since page load.
-        $rootScope.serverChanged = false;
+        // // whether a new version of Treeherder was deployed since page load.
+        // $rootScope.serverChanged = false;
 
         // Ensure user is available on initial page load
         $rootScope.user = {};
@@ -40,15 +40,15 @@ treeherderApp.controller('MainCtrl', [
         $rootScope.revision = $location.search().revision;
         thClassificationTypes.load();
 
-        // TODO: remove this when the thGlobalTopNavPanel is converted to React.
+        // TODO: Remove this when pinnedJobs is converted to a model or Context
         $rootScope.countPinnedJobs = () => 0;
 
-        // TODO: remove this when SecondaryNavBar has JobView as an ancestor.
-        $scope.updateButtonClick = function () {
-            if (window.confirm('Reload the page to pick up Treeherder updates?')) {
-                window.location.reload(true);
-            }
-        };
+        // // TODO: remove this when SecondaryNavBar has JobView as an ancestor.
+        // $scope.updateButtonClick = function () {
+        //     if (window.confirm('Reload the page to pick up Treeherder updates?')) {
+        //         window.location.reload(true);
+        //     }
+        // };
 
         const getSingleRevisionTitleString = function () {
             let revisions = [];
@@ -155,13 +155,13 @@ treeherderApp.controller('MainCtrl', [
             }
         };
 
-        // For the Filter menu on the thGlobalTopNavPanel
-        $scope.resultStatuses = thAllResultStatuses.slice();
-        $scope.resultStatuses.splice(thAllResultStatuses.indexOf('runnable'), 1);
-
-        $scope.isFilterOn = field => (
-          [...thJobFilters.getResultStatusArray(), ...thJobFilters.getClassifiedStateArray()].includes(field)
-        );
+        // // For the Filter menu on the thGlobalTopNavPanel
+        // $scope.resultStatuses = thAllResultStatuses.slice();
+        // $scope.resultStatuses.splice(thAllResultStatuses.indexOf('runnable'), 1);
+        //
+        // $scope.isFilterOn = field => (
+        //   [...thJobFilters.getResultStatusArray(), ...thJobFilters.getClassifiedStateArray()].includes(field)
+        // );
 
         // Setup key event handling
         const stopOverrides = new Map();
@@ -426,11 +426,11 @@ treeherderApp.controller('MainCtrl', [
 
         $scope.updateTiers();
 
-        // clicked a checkbox in the tier menu
-        $scope.tierToggled = function (tier) {
-            thJobFilters.toggleFilters('tier', [tier], $scope.tiers[tier]);
-            $rootScope.$emit(thEvents.recalculateUnclassified);
-        };
+        // // clicked a checkbox in the tier menu
+        // $scope.tierToggled = function (tier) {
+        //     thJobFilters.toggleFilters('tier', [tier], $scope.tiers[tier]);
+        //     $rootScope.$emit(thEvents.recalculateUnclassified);
+        // };
 
         const getNewReloadTriggerParams = function () {
             const locationSearch = $location.search();
@@ -475,9 +475,9 @@ treeherderApp.controller('MainCtrl', [
             $scope.updateTiers();
         });
 
-        $scope.pinJobs = function () {
-          $rootScope.$emit(thEvents.pinJobs, ThResultSetStore.getAllShownJobs());
-        };
+        // $scope.pinJobs = function () {
+        //   $rootScope.$emit(thEvents.pinJobs, ThResultSetStore.getAllShownJobs());
+        // };
 
         $scope.onscreenOverlayShowing = false;
 

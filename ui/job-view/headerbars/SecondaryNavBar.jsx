@@ -1,14 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { react2angular } from 'react2angular/index.es2015';
 
-import treeherder from '../../js/treeherder';
 import { thEvents } from '../../js/constants';
 import { getBtnClass } from '../../helpers/job';
 import { getUrlParam } from '../../helpers/location';
 import WatchedRepo from './WatchedRepo';
 
-class SecondaryNavBar extends React.Component {
+export default class SecondaryNavBar extends React.Component {
   constructor(props) {
     super(props);
 
@@ -290,7 +288,7 @@ SecondaryNavBar.propTypes = {
   serverChanged: PropTypes.bool.isRequired,
 };
 
-treeherder.component('secondaryNavBar', react2angular(
-  SecondaryNavBar,
-  ['updateButtonClick', 'serverChanged'],
-  ['$injector']));
+// treeherder.component('secondaryNavBar', react2angular(
+//   SecondaryNavBar,
+//   ['updateButtonClick', 'serverChanged'],
+//   ['$injector']));

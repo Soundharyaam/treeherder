@@ -25,7 +25,6 @@ import './js/treeherder_app';
 
 // Treeherder React UI
 import './job-view/JobView';
-import './job-view/headerbars/SecondaryNavBar';
 
 // Treeherder JS
 import './js/components/auth';
