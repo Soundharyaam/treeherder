@@ -367,7 +367,7 @@ treeherder.factory('thJobFilters', [
             if (_matchesDefaults(RESULT_STATUS, rsValues)) {
                 rsValues = null;
             }
-            $location.search(QS_RESULT_STATUS, rsValues);
+            $timeout($location.search(QS_RESULT_STATUS, rsValues));
         }
 
         function toggleClassifiedFilter(classifiedState) {

@@ -57,6 +57,7 @@ class JobView extends React.Component {
     this.history = createBrowserHistory();
 
     this.state = {
+      user: { isLoggedIn: false },
       isFieldFilterVisible: false,
       filterBarFilters: [
        ...this.thJobFilters.getNonFieldFiltersArray(),
@@ -71,6 +72,7 @@ class JobView extends React.Component {
   componentDidMount() {
     this.toggleFieldFilterVisible = this.toggleFieldFilterVisible.bind(this);
     this.updateDimensions = this.updateDimensions.bind(this);
+    this.setUser = this.setUser.bind(this);
 
     window.addEventListener('resize', this.updateDimensions);
 
@@ -118,6 +120,10 @@ class JobView extends React.Component {
     });
   }
 
+  setUser(user) {
+    this.setState({ user });
+  }
+
   fetchDeployedRevision() {
     return fetch(deployedRevisionUrl).then(resp => resp.text());
   }
@@ -154,10 +160,10 @@ class JobView extends React.Component {
 
   render() {
     const {
-      user, repoName, revision, currentRepo, selectedJob, $injector,
+      repoName, revision, currentRepo, selectedJob, $injector,
     } = this.props;
     const {
-      isFieldFilterVisible, filterBarFilters, serverChangedDelayed,
+      user, isFieldFilterVisible, filterBarFilters, serverChangedDelayed,
       defaultPushListPct, defaultDetailsHeight, latestSplitPct, serverChanged,
     } = this.state;
     // SplitPane will adjust the CSS height of the top component, but not the
@@ -183,6 +189,8 @@ class JobView extends React.Component {
           pinJobs={this.pinJobs}
           serverChanged={serverChanged}
           history={this.history}
+          setUser={this.setUser}
+          user={user}
           $injector={$injector}
         />
         <SplitPane
@@ -229,7 +237,6 @@ class JobView extends React.Component {
 
 JobView.propTypes = {
   $injector: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired,
   repoName: PropTypes.string.isRequired,
   revision: PropTypes.string,
   currentRepo: PropTypes.object,
@@ -246,5 +253,5 @@ JobView.defaultProps = {
 
 treeherder.component('jobView', react2angular(
   JobView,
-  ['repoName', 'user', 'revision', 'currentRepo', 'selectedJob'],
+  ['repoName', 'revision', 'currentRepo', 'selectedJob'],
   ['$injector']));

@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { toShortDateStr } from '../../helpers/display';
-import SecondaryNavBar from './SecondaryNavBar';
 import { thAllResultStatuses, thEvents } from '../../js/constants';
+import { toShortDateStr } from '../../helpers/display';
+import Authentication from '../../shared/Authentication';
+import HelpMenu from './HelpMenu';
+import SecondaryNavBar from './SecondaryNavBar';
 
 export default class PrimaryNavBar extends React.Component {
   constructor(props) {
@@ -58,11 +60,9 @@ export default class PrimaryNavBar extends React.Component {
 
   render() {
     const {
-      notifications, jobFilters, groupedRepos, tiers, pinJobs,
+      user, setUser, notifications, jobFilters, groupedRepos, tiers, pinJobs,
       updateButtonClick, serverChanged, $injector,
     } = this.props;
-
-    console.log('groupedRepos', groupedRepos);
 
     return (
       <div id="global-navbar-container">
@@ -281,11 +281,9 @@ export default class PrimaryNavBar extends React.Component {
                               id="tier-checkbox"
                               type="checkbox"
                               className={`mousetrap ${(this.isSingleTierSelected() && tiers[tier] === true) ? 'disabled' : ''}`}
-                              ng-model="tiers[tier]"
-                              ng-disabled=""
+                              checked={!!tiers[tier]}
                               onChange={() => this.tierToggled(tier)}
-                              value={`tier ${tier}`}
-                            />
+                            />tier {tier}
                           </label>
                         </div>
                       </li>
@@ -317,10 +315,9 @@ export default class PrimaryNavBar extends React.Component {
                                   type="checkbox"
                                   className="mousetrap"
                                   id={filterName}
-                                  checked="isFilterOn(filterName)"
+                                  checked={this.isFilterOn(filterName)}
                                   onChange={() => jobFilters.toggleResultStatuses([filterName])}
-                                  value={filterName}
-                                />
+                                />{filterName}
                               </label>
                             </span>
                           </span>
@@ -333,8 +330,7 @@ export default class PrimaryNavBar extends React.Component {
                           id="classified"
                           checked={this.isFilterOn('classified')}
                           onChange={() => jobFilters.toggleClassifiedFilter('classified')}
-                          value="classified"
-                        />
+                        />classified
                       </label>
                       <label className="dropdown-item">
                         <input
@@ -342,8 +338,7 @@ export default class PrimaryNavBar extends React.Component {
                           id="unclassified"
                           checked={this.isFilterOn('unclassified')}
                           onChange={() => jobFilters.toggleClassifiedFilter('unclassified')}
-                          value="unclassified"
-                        />
+                        />unclassified
                       </label>
                       <li className="dropdown-divider separator" />
                       <li
@@ -366,24 +361,15 @@ export default class PrimaryNavBar extends React.Component {
                 </span>
 
                 {/*  Help Menu */}
-                <span id="help-menu" className="dropdown">
-                  <button
-                    id="helpLabel"
-                    title="Treeherder help"
-                    data-toggle="dropdown"
-                    className="btn btn-view-nav nav-help-btn dropdown-toggle"
-                  >
-                    <span className="fa fa-question-circle lightgray nav-help-icon" />
-                  </button>
-                  <ul
-                    className="dropdown-menu nav-dropdown-menu-right icon-menu"
-                    role="menu"
-                    aria-labelledby="helpLabel"
-                    ng-include="'partials/main/thHelpMenu.html'"
-                  />
-                </span>
+                <HelpMenu />
+
 
                 {/* Login/Register Button */}
+                <Authentication
+                  user={user}
+                  setUser={setUser}
+                  $injector={$injector}
+                />
                 {/* <login on-user-change="$root.user = $event.user" /> */}
               </span>
 
@@ -405,9 +391,11 @@ PrimaryNavBar.propTypes = {
   notifications: PropTypes.array.isRequired,
   history: PropTypes.object.isRequired,
   jobFilters: PropTypes.object.isRequired,
-  groupedRepos: PropTypes.object.isRequired,
+  groupedRepos: PropTypes.array.isRequired,
   tiers: PropTypes.array.isRequired,
   updateButtonClick: PropTypes.func.isRequired,
   pinJobs: PropTypes.func.isRequired,
   serverChanged: PropTypes.bool.isRequired,
+  setUser: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
 };
