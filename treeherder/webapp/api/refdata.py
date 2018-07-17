@@ -35,11 +35,11 @@ class OptionCollectionHashViewSet(viewsets.ViewSet):
         return Response(ret)
 
 
-class FailureClassificationViewSet(viewsets.ReadOnlyModelViewSet):
+class FailureTypeViewSet(viewsets.ReadOnlyModelViewSet):
 
-    """ViewSet for the refdata FailureClassification model"""
-    queryset = models.FailureClassification.objects.all()
-    serializer_class = th_serializers.FailureClassificationSerializer
+    """ViewSet for the refdata FailureType model"""
+    queryset = models.FailureType.objects.all()
+    serializer_class = th_serializers.FailureTypeSerializer
 
 #############################
 # User profiles
